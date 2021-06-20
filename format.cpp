@@ -26,7 +26,7 @@ int main(int argc, char **argv)
     int line = 1; 
     printf("How much space of indent u want\n"); 
     scanf("%d", &(c.space));
-
+    c.space = c.space - 1; 
     if (argc <= 3) 
     {
         printf("./format [file] [start-line] [end-line]\n");
@@ -59,6 +59,8 @@ int main(int argc, char **argv)
                 line_length++; 
             }
     
+            /*
+            bug
             if (line_length > c.space && flag == false) 
             {
                 if (s == -1) 
@@ -72,6 +74,7 @@ int main(int argc, char **argv)
                 }
                 line_length = c.space; 
             }
+            */
 
             if (content[i] == '\n')
             {
