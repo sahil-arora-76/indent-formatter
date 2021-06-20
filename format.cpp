@@ -23,60 +23,72 @@ int main(int argc, char **argv)
 
     std::string content; 
     int line_length = 0; 
+    int line = 1; 
+    printf("How much space of indent u want\n"); 
+    scanf("%d", &(c.space));
 
     if (argc <= 3) 
     {
-        printf("./format [file] [starting line] [ending line]\n");
+        printf("./format [file] [start-line] [end-line]\n");
         return -1; 
     }
     try
     {
-        c.start_line =  std::stoi(argv[2]); 
+        c.start_line = std::stoi(argv[2]); 
         c.end_line = std::stoi(argv[3]); 
-    } catch(std::exception const &e) 
+    } catch(...) 
     {
-        printf("%s", e.what()); 
-        return -1; 
+        printf("error occured\n"); 
+        return -1;
     }
-
-    c.space = 5;
     content = read_file_content(argv[1]); 
     bool flag = false; 
     int s = -1;
     for (int i = 0; i < (int) content.length(); i++) 
     {
-
-        int a = content[i];
-        if (a == 32) 
+        if (line >= c.start_line && line <= c.end_line) 
         {
-            line_length++; 
-        }
-        if (a != 32 && line_length < c.space && flag == false) 
-        {
-            content.insert(i, " ");
-            line_length++; 
-        }
-
-        if (line_length > c.space && flag == false) 
-        {
-            printf("%d %c\n", line_length, content[i]); 
-            if (s == -1) 
+            int a = content[i];
+            if (a == 32) 
             {
-                content.erase( 0, (line_length - c.space) );
-                flag = true; 
-            } else 
-            {
-                content.erase( s + 1, line_length - c.space);
-                flag = true; 
+                line_length++; 
             }
-            line_length = 4; 
-        }
+            if (a != 32 && (line_length < c.space)) 
+            {
+                content.insert(i, " ");
+                line_length++; 
+            }
+    
+            // this line of code that removes extra indent than specified 
+            //bug
+            
+            // if (line_length > c.space && flag == false) 
+            // {
+            //     if (s == -1) 
+            //     {
+            //         content.erase( 0, (line_length - c.space)  );
+            //         flag = true; 
+            //     } else 
+            //     {
+            //         content.erase( s + 1, line_length - c.space);
+            //         flag = true; 
+            //     }
+            //     line_length = c.space; 
+            // }
 
-        if (content[i] == '\n')
+            if (content[i] == '\n')
+            {
+                line_length = 0;
+                flag = false;  
+                s = i; 
+            }
+        } else if (line > c.end_line) 
         {
-            line_length = 0;
-            flag = false;  
-            s = i; 
+            break;
+        }
+        if (content[i] == '\n') 
+        {
+            line++; 
         }
     }
     write_file(argv[1], content); 
