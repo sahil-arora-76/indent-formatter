@@ -53,28 +53,25 @@ int main(int argc, char **argv)
             {
                 line_length++; 
             }
-            if (a != 32 && (line_length < c.space)) 
+            if (a != 32 && (line_length < c.space && flag == false)) 
             {
                 content.insert(i, " ");
                 line_length++; 
             }
     
-            // this line of code that removes extra indent than specified 
-            //bug
-            
-            // if (line_length > c.space && flag == false) 
-            // {
-            //     if (s == -1) 
-            //     {
-            //         content.erase( 0, (line_length - c.space)  );
-            //         flag = true; 
-            //     } else 
-            //     {
-            //         content.erase( s + 1, line_length - c.space);
-            //         flag = true; 
-            //     }
-            //     line_length = c.space; 
-            // }
+            if (line_length > c.space && flag == false) 
+            {
+                if (s == -1) 
+                {
+                    // content.erase( 0, (line_length - c.space)  );
+                    flag = true; 
+                } else 
+                {
+                    content.erase( s + 1, line_length - c.space);
+                    flag = true; 
+                }
+                line_length = c.space; 
+            }
 
             if (content[i] == '\n')
             {
