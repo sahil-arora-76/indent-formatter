@@ -24,6 +24,8 @@ int main(int argc, char **argv)
     std::string content; 
     int line_length = 0; 
     int line = 1; 
+    bool flag = false;
+
     printf("How much space of indent u want\n"); 
     scanf("%d", &(c.space));
     c.space = c.space - 1; 
@@ -42,45 +44,24 @@ int main(int argc, char **argv)
         return -1;
     }
     content = read_file_content(argv[1]); 
-    bool flag = false; 
-    int s = -1;
     for (int i = 0; i < (int) content.length(); i++) 
     {
         if (line >= c.start_line && line <= c.end_line) 
         {
             int a = content[i];
-            if (a == 32) 
-            {
-                line_length++; 
-            }
             if (a != 32 && (line_length < c.space && flag == false)) 
             {
                 content.insert(i, " ");
                 line_length++; 
+            } else if (a == 32) 
+            {
+                line_length++; 
             }
     
-            /*
-            bug
-            if (line_length > c.space && flag == false) 
-            {
-                if (s == -1) 
-                {
-                    // content.erase( 0, (line_length - c.space)  );
-                    flag = true; 
-                } else 
-                {
-                    content.erase( s + 1, line_length - c.space);
-                    flag = true; 
-                }
-                line_length = c.space; 
-            }
-            */
-
             if (content[i] == '\n')
             {
                 line_length = 0;
                 flag = false;  
-                s = i; 
             }
         } else if (line > c.end_line) 
         {
